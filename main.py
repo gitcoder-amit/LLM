@@ -31,6 +31,14 @@ def generateRecipe(items):
 
     print(completion.choices[0].message.content)
 
+def analyze_code_with_llm(file_content):
+    prompt = f"""
+        Analyze the following code for :
+        Code style 
+        {file_content}
+    """
+
+
 
 items = "Chicken, Rice, Broccoli, Garlic, Soy Sauce"
 generateRecipe(items)
