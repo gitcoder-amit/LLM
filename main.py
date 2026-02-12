@@ -86,14 +86,46 @@ def analyze_code_with_llm(file_content):
     completion = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages = [
+            {'role': 'system', 'content':system_prompt},
             {'role': 'user',
             'content':prompt}
         ],
-        temperature=1
+        temperature=1,
+        stream=True # enable streaming means we will get results related to response as soon as they are generated
     )    
 
 
     print(completion.choices[0].message.content)
+
+
+import requests
+import base64
+
+class GithubAccess:
+    def __init__(self, repo_name, username, pr_number, token=None):
+        self.repo_name = repo_name
+        self.username = username
+        self.pr_number = pr_number
+        self.token = token
+
+    def fetch_pr_files(self):
+        url = f"https://api.github.com/repos/{self.username}/{self.repo_name}/pulls/{self.pr_number}/files"
+        headers = {"Authorization": f"token {self.token}"} if self.token else {}
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    
+
+    def fetch_file_content(self, file_path):
+        url = f"https://api.github.com/repos/{self.username}/{self.repo_name}/contents/{file_path}"
+        headers = {"Authorization": f"token {self.token}"} if self.token else {}
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    
+    def convert_base64_to_string(self, base64_content):
+        return base64.b64decode(base64_content).decode('utf-8')
+
 
 
 import base64
