@@ -114,7 +114,6 @@ class GithubCodeAccess:
             file_content_response = self.fetch_file_content(file_path)
             base64_content = file_content_response['content']
             decoded_content = self.convert_base64_to_string(base64_content)
-            breakpoint()
             analyze_code_with_llm(decoded_content)
 
     def fetch_pr_files(self):
