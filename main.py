@@ -101,12 +101,21 @@ def analyze_code_with_llm(file_content):
 import requests
 import base64
 
-class GithubAccess:
+class GithubCodeAccess:
     def __init__(self, repo_name, username, pr_number, token=None):
         self.repo_name = repo_name
         self.username = username
         self.pr_number = pr_number
         self.token = token
+
+    def analyse_pr(self):
+        pr_files = self.fetch_pr_files()
+        for file in pr_files:
+            file_path = file['filename']
+            file_content_response = self.fetch_file_content(file_path)
+            base64_content = file_content_response['content']
+            decoded_content = self.convert_base64_to_string(base64_content)
+            analyze_code_with_llm(decoded_content)
 
     def fetch_pr_files(self):
         url = f"https://api.github.com/repos/{self.username}/{self.repo_name}/pulls/{self.pr_number}/files"
@@ -136,3 +145,14 @@ analyze_code_with_llm(base64.b64decode(code_str).decode())
 
 # items = "Chicken, Rice, Broccoli, Garlic, Soy Sauce"
 # generateRecipe(items)
+
+
+
+github = GithubCodeAccess(
+    repo_name="LLM",
+    username="gitcoder-amit",
+    pr_number=1,
+    token=None
+)
+
+github.analyse_pr()
