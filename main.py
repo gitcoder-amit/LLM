@@ -91,9 +91,8 @@ def analyze_code_with_llm(file_content):
             'content':prompt}
         ],
         temperature=1,
-        stream=True # enable streaming means we will get results related to response as soon as they are generated
+        # stream=True # enable streaming means we will get results related to response as soon as they are generated
     )    
-
 
     print(completion.choices[0].message.content)
 
@@ -115,6 +114,7 @@ class GithubCodeAccess:
             file_content_response = self.fetch_file_content(file_path)
             base64_content = file_content_response['content']
             decoded_content = self.convert_base64_to_string(base64_content)
+            breakpoint()
             analyze_code_with_llm(decoded_content)
 
     def fetch_pr_files(self):
@@ -133,14 +133,15 @@ class GithubCodeAccess:
         return response.json()
     
     def convert_base64_to_string(self, base64_content):
+        import base64
         return base64.b64decode(base64_content).decode('utf-8')
 
 
 
-import base64
-code_str = """IyEvdXNyL2Jpbi9lbnYgcHl0aG9uCiIiIkRqYW5nbydzIGNvbW1hbmQtbGlu\nZSB1dGlsaXR5IGZvciBhZG1pbmlzdHJhdGl2ZSB0YXNrcy4iIiIKaW1wb3J0\nIG9zCmltcG9ydCBzeXMKCgpkZWYgbWFpbigpOgogICAgIiIiUnVuIGFkbWlu\naXN0cmF0aXZlIHRhc2tzLiIiIgogICAgb3MuZW52aXJvbi5zZXRkZWZhdWx0\nKCdESkFOR09fU0VUVElOR1NfTU9EVUxFJywgJ2RqbWlkZGxld2FyZS5zZXR0\naW5ncycpCiAgICB0cnk6CiAgICAgICAgZnJvbSBkamFuZ28uY29yZS5tYW5h\nZ2VtZW50IGltcG9ydCBleGVjdXRlX2Zyb21fY29tbWFuZF9saW5lCiAgICBl\neGNlcHQgSW1wb3J0RXJyb3IgYXMgZXhjOgogICAgICAgIHJhaXNlIEltcG9y\ndEVycm9yKAogICAgICAgICAgICAiQ291bGRuJ3QgaW1wb3J0IERqYW5nby4g\nQXJlIHlvdSBzdXJlIGl0J3MgaW5zdGFsbGVkIGFuZCAiCiAgICAgICAgICAg\nICJhdmFpbGFibGUgb24geW91ciBQWVRIT05QQVRIIGVudmlyb25tZW50IHZh\ncmlhYmxlPyBEaWQgeW91ICIKICAgICAgICAgICAgImZvcmdldCB0byBhY3Rp\ndmF0ZSBhIHZpcnR1YWwgZW52aXJvbm1lbnQ/IgogICAgICAgICkgZnJvbSBl\neGMKICAgIGV4ZWN1dGVfZnJvbV9jb21tYW5kX2xpbmUoc3lzLmFyZ3YpCgoK\naWYgX19uYW1lX18gPT0gJ19fbWFpbl9fJzoKICAgIG1haW4oKQo=\n"""
-# print(base64.b64decode(code_str).decode()) 
-analyze_code_with_llm(base64.b64decode(code_str).decode())
+# import base64
+# code_str = """IyEvdXNyL2Jpbi9lbnYgcHl0aG9uCiIiIkRqYW5nbydzIGNvbW1hbmQtbGlu\nZSB1dGlsaXR5IGZvciBhZG1pbmlzdHJhdGl2ZSB0YXNrcy4iIiIKaW1wb3J0\nIG9zCmltcG9ydCBzeXMKCgpkZWYgbWFpbigpOgogICAgIiIiUnVuIGFkbWlu\naXN0cmF0aXZlIHRhc2tzLiIiIgogICAgb3MuZW52aXJvbi5zZXRkZWZhdWx0\nKCdESkFOR09fU0VUVElOR1NfTU9EVUxFJywgJ2RqbWlkZGxld2FyZS5zZXR0\naW5ncycpCiAgICB0cnk6CiAgICAgICAgZnJvbSBkamFuZ28uY29yZS5tYW5h\nZ2VtZW50IGltcG9ydCBleGVjdXRlX2Zyb21fY29tbWFuZF9saW5lCiAgICBl\neGNlcHQgSW1wb3J0RXJyb3IgYXMgZXhjOgogICAgICAgIHJhaXNlIEltcG9y\ndEVycm9yKAogICAgICAgICAgICAiQ291bGRuJ3QgaW1wb3J0IERqYW5nby4g\nQXJlIHlvdSBzdXJlIGl0J3MgaW5zdGFsbGVkIGFuZCAiCiAgICAgICAgICAg\nICJhdmFpbGFibGUgb24geW91ciBQWVRIT05QQVRIIGVudmlyb25tZW50IHZh\ncmlhYmxlPyBEaWQgeW91ICIKICAgICAgICAgICAgImZvcmdldCB0byBhY3Rp\ndmF0ZSBhIHZpcnR1YWwgZW52aXJvbm1lbnQ/IgogICAgICAgICkgZnJvbSBl\neGMKICAgIGV4ZWN1dGVfZnJvbV9jb21tYW5kX2xpbmUoc3lzLmFyZ3YpCgoK\naWYgX19uYW1lX18gPT0gJ19fbWFpbl9fJzoKICAgIG1haW4oKQo=\n"""
+# # print(base64.b64decode(code_str).decode()) 
+# analyze_code_with_llm(base64.b64decode(code_str).decode())
 
 
 # items = "Chicken, Rice, Broccoli, Garlic, Soy Sauce"
